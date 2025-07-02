@@ -4,7 +4,7 @@ import BottomNav from "./bottom-nav";
 import TasksSlides from "./tasks-slides";
 import MonthTasks from "./month-tasks";
 import { tasksData } from "../data";
-import { Activity } from "lucide-react";
+import TaskCalendar from "./task-calendar";
 
 const Landing = () => {
   const [currentPage, setCurrentPage] = useState("Home");
@@ -13,13 +13,21 @@ const Landing = () => {
   const hours = date.getHours();
   let greetings = "";
 
-  if (hours < 12) {
-    greetings = "Good morning 🌞";
-  } else if (hours < 18) {
-    greetings = "Good afternoon☀️ ";
-  } else {
-    greetings = "Good evening 🌙 ";
-  }
+  hours < 12
+    ? (greetings = "Good morning 🌞")
+    : hours < 18
+    ? (greetings = "Good afternoon☀️ ")
+    : (greetings = "Good evening 🌙 ");
+
+  const calendarEvents = tasksData.reduce((acc, category) => {
+    const events = category.tasks.map((task) => ({
+      title: task.title,
+      date: task.date,
+      description: task.text,
+      isCompleted: task.isCompleted,
+    }));
+    return acc.concat(events);
+  }, []);
 
   return (
     <div className="max-w-[1200px] mx-auto">
@@ -38,14 +46,16 @@ const Landing = () => {
             </div>
             <TasksSlides tasksData={tasksData} />
             <div>
-              <h1 className="text-xl font-bold text-[#F2AC20]">
+              <h1 className="text-xl font-bold text-[#F2AC20] font-poppins">
                 Your tasks for {monthName}
               </h1>
               <MonthTasks tasksData={tasksData} />
             </div>{" "}
           </div>
         ) : currentPage === "Tasks" ? (
-          <div>Tasks here</div>
+          <div>
+            <TaskCalendar events={calendarEvents} />
+          </div>
         ) : (
           <div>Settings here</div>
         )}

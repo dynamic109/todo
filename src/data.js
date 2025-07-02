@@ -21,7 +21,7 @@ export const tasksData = [
         time: "14:00",
         title: "Design Feedback",
         text: "Give feedback on the new dashboard mockup.",
-        isCompleted: false,
+        isCompleted: true,
       },
       {
         date: "2025-07-01",
