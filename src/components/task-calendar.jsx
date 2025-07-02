@@ -4,19 +4,44 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 
 const TaskCalendar = ({ events }) => {
   const [selectedTask, setSelectedTask] = useState(null);
+  let taskStatus = "";
+  let statusColor = "";
+  const day = String(new Date().getDate()).padStart(2, "0");
+  const newCurrentDate = Number(day);
+  let newTaskDate;
 
   const handleEventClick = (clickInfo) => {
     const { title, start, extendedProps } = clickInfo.event;
+    console.log(start);
+
     setSelectedTask({
       title,
-      date: start.toISOString().split("T")[0],
+      date: start.toLocaleDateString("en-CA"),
       ...extendedProps,
     });
   };
 
-//   console.log(events);
+  if (selectedTask) {
+    newTaskDate = Number(selectedTask.date.split("-")[2]);
+    if (newCurrentDate < newTaskDate && !selectedTask.isCompleted) {
+      taskStatus = "⏳ Pending";
+      statusColor = "#F2AC20";
+    } else if (newCurrentDate > newTaskDate && !selectedTask.isCompleted) {
+      taskStatus = "❌ Not completed";
+      statusColor = "#DC2626";
+    } else if (newCurrentDate === newTaskDate && !selectedTask.isCompleted) {
+      taskStatus = "⏳ Pending";
+      statusColor = "#F2AC20";
+    } else {
+      taskStatus = "✅ Completed";
+      statusColor = "#16A34A";
+    }
+  }
+
+  console.log(taskStatus);
+
   return (
-    <div className="w-fit overflow-x-auto mx-auto mb-28 bg-white">
+    <div className="w-fit overflow-x-auto mx-auto mb-10 bg-white font-jakarta">
       <FullCalendar
         plugins={[dayGridPlugin]}
         initialView="dayGridMonth"
@@ -39,14 +64,10 @@ const TaskCalendar = ({ events }) => {
               📅 Date: {selectedTask.date}
             </p>
             <p className="text-sm text-gray-700 mb-4">
-              📝 {selectedTask.text || "No description"}
+              📝 {selectedTask.description || "No description"}
             </p>
-            <p
-              className={`text-xs font-medium ${
-                selectedTask.isCompleted ? "text-green-600" : "text-red-600"
-              }`}
-            >
-              {selectedTask.isCompleted ? "✅ Completed" : "⏳ Pending"}
+            <p className={`text-xs font-medium`} style={{ color: statusColor }}>
+              {taskStatus}
             </p>
             <button
               onClick={() => setSelectedTask(null)}

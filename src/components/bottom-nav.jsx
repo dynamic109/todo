@@ -10,7 +10,7 @@ const bottomNavItems = [
 const BottomNav = ({ currentPage, setCurrentPage }) => {
   return (
     <div className="fixed bottom-0 bg-[#1A1D29] w-full px-6 py-3 font-jakarta z-50">
-      <div className="flex justify-between items-center">
+      <div className="flex justify-between items-center max-w-[1200px] mx-auto">
         {bottomNavItems.map((item, index) => {
           const isActive = currentPage === item.name;
           return (
