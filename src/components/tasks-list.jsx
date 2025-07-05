@@ -63,9 +63,9 @@ const TasksLists = ({ tasksData }) => {
                     style={{
                       borderColor: statusColor,
                     }}
-                    className="border-l-4 shadow-xl rounded-md h-fit bg-[#1A1D29] flex items-center justify-between "
+                    className="relative border-l-6 shadow-lg rounded-md h-fit bg-gray-300 flex items-center justify-between "
                   >
-                    <div className="pl-4 py-8 space-y-3 z-40 w-2/3 text-[white]">
+                    <div className="pl-4 py-8 space-y-3 w-2/3 text-[#061A40]">
                       <h3 className="font-bold text-lg font-manrope">
                         {task.title}{" "}
                       </h3>
