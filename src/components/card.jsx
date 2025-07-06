@@ -17,7 +17,7 @@ const Card = ({ text, title, time }) => {
         ))}
       </div>
       <div className="w-full relative flex flex-row items-center justify-between">
-        <div className="text-lg font-bold text-[white] space-y-1 max-w-[2220px]">
+        <div className="text-lg font-bold text-[white] space-y-1 max-w-[220px]">
           <div className="flex items-center space-x-2">
             {" "}
             <p>{title}</p>

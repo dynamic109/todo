@@ -7,33 +7,40 @@ import { Autoplay } from "swiper/modules";
 const TasksSlides = ({ tasksData }) => {
   const currentDate = new Date().toISOString().split("T")[0];
 
-  return (
-    <Swiper
-      modules={[Autoplay]}
-      spaceBetween={50}
-      slidesPerView={1}
-    //   onSlideChange={() => console.log("slide change")}
-    //   onSwiper={(swiper) => console.log(swiper)}
-      autoplay={{
-        delay: 3000,
-        disableOnInteraction: false,
-      }}
-    >
-      {tasksData?.map((data) => {
-        const filteredTasks = data.tasks.filter(
-          (task) => task.date === currentDate
-        );
+  // Collect all today's tasks from all categories
+  const todaysTasks =
+    tasksData?.flatMap((category) =>
+      category.tasks.filter((task) => task.date === currentDate)
+    ) || [];
 
-        return filteredTasks.map((task, index) => {
-          //   console.log("Rendering task:", task);
-          return (
-            <SwiperSlide key={index}>
+  // Check if we have any tasks for today
+  const hasTasks = todaysTasks.length > 0;
+
+  return (
+    <div className="w-full">
+      {hasTasks ? (
+        <Swiper
+          modules={[Autoplay]}
+          spaceBetween={50}
+          slidesPerView={1}
+          autoplay={{
+            delay: 3000,
+            disableOnInteraction: false,
+          }}
+          className="w-full"
+        >
+          {todaysTasks.map((task, index) => (
+            <SwiperSlide key={`task-${index}`}>
               <Card {...task} />
             </SwiperSlide>
-          );
-        });
-      })}
-    </Swiper>
+          ))}
+        </Swiper>
+      ) : (
+        <div className="text-black w-full p-6 bg-white rounded-lg shadow-md text-center">
+          No tasks for today
+        </div>
+      )}
+    </div>
   );
 };
 

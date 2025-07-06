@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import TopNav from "./components/top-nav";
 import BottomNav from "./components/bottom-nav";
-import TasksSlides from "./components/tasks-slides";
-import MonthTasks from "./components/month-tasks";
 import { tasksData } from "./data";
 import Task from "./components/task";
 import Landing from "./components/landing";
@@ -14,17 +12,18 @@ const App = () => {
   const [isNewTaskOpen, setIsNewTaskOpen] = useState(false);
   const [localTasksData, setLocalTasksData] = useState(tasksData);
 
+  // console.log(localTasksData);
+
   const handleSaveTask = (newTask) => {
-    // Find the category object
     const categoryIndex = localTasksData.findIndex(
       (category) => category.category === newTask.category
     );
 
+    // console.log(categoryIndex)
+
     if (categoryIndex !== -1) {
-      // Create a deep copy of the tasksData
       const updatedTasksData = [...localTasksData];
 
-      // Add the new task to the appropriate category
       updatedTasksData[categoryIndex] = {
         ...updatedTasksData[categoryIndex],
         tasks: [...updatedTasksData[categoryIndex].tasks, newTask],
@@ -54,18 +53,18 @@ const App = () => {
           </div>
         )}
       </div>
-      <div className="absolute right-4 bottom-20 z-10">
+      <div>
+        <BottomNav currentPage={currentPage} setCurrentPage={setCurrentPage} />
+      </div>
+      <div className="fixed right-4 bottom-22 z-10">
         <button
-          className="bg-[#4265D6] py-2 px-3 h-fit rounded-lg shadow-xl text-white hover:bg-[#3254C5] transition-all"
+          className="bg-[#4265D6] py-3 px-3 h-fit rounded-md shadow-xl text-white hover:bg-[#3254C5] transition-all"
           onClick={() => setIsNewTaskOpen(true)}
         >
           New Task +
         </button>
       </div>
-      <div>
-        <BottomNav currentPage={currentPage} setCurrentPage={setCurrentPage} />
-      </div>
-
+      F
       <NewTask
         isOpen={isNewTaskOpen}
         onClose={() => setIsNewTaskOpen(false)}

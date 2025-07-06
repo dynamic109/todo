@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
-import { AnimatePresence } from "framer-motion";
-import { motion } from "motion/react";
+import React, { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { X } from "lucide-react";
 
 const NewTask = ({ isOpen, onClose, onSave, categories }) => {
   const [taskData, setTaskData] = useState({
@@ -8,21 +8,17 @@ const NewTask = ({ isOpen, onClose, onSave, categories }) => {
     text: "",
     date: "",
     category: "",
+    time: "",
     isCompleted: false,
   });
   const [errors, setErrors] = useState({});
-
-  // Set default date to today when component mounts
-  useEffect(() => {
-    const today = new Date().toISOString().split("T")[0];
-    setTaskData((prev) => ({ ...prev, date: today }));
-  }, []);
 
   const validate = () => {
     const newErrors = {};
     if (!taskData.title.trim()) newErrors.title = "Title is required";
     if (!taskData.text.trim()) newErrors.text = "Description is required";
     if (!taskData.date) newErrors.date = "Date is required";
+    if (!taskData.time) newErrors.category = "Time is required";
     if (!taskData.category) newErrors.category = "Category is required";
 
     setErrors(newErrors);
@@ -33,7 +29,8 @@ const NewTask = ({ isOpen, onClose, onSave, categories }) => {
     const { name, value } = e.target;
     setTaskData((prev) => ({ ...prev, [name]: value }));
 
-    // Clear error when field is filled
+    console.log(value);
+
     if (errors[name]) {
       setErrors((prev) => ({ ...prev, [name]: "" }));
     }
@@ -48,6 +45,7 @@ const NewTask = ({ isOpen, onClose, onSave, categories }) => {
         text: "",
         date: new Date().toISOString().split("T")[0],
         category: "",
+        time: new Date().getHours,
         isCompleted: false,
       });
       onClose();
@@ -79,20 +77,7 @@ const NewTask = ({ isOpen, onClose, onSave, categories }) => {
                 onClick={onClose}
                 className="text-gray-500 hover:text-gray-700 transition-colors"
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                </svg>
+                <X />
               </button>
             </div>
 
@@ -132,6 +117,25 @@ const NewTask = ({ isOpen, onClose, onSave, categories }) => {
                 ></textarea>
                 {errors.text && (
                   <p className="mt-1 text-xs text-red-500">{errors.text}</p>
+                )}
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Time
+                </label>
+                <input
+                  type="time"
+                  name="time"
+                  value={taskData.time}
+                  onChange={handleChange}
+                  className={`w-full px-4 py-2 border ${
+                    errors.time ? "border-red-500" : "border-gray-300"
+                  } rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4265D6]`}
+                  placeholder="Task time"
+                />
+                {errors.time && (
+                  <p className="mt-1 text-xs text-red-500">{errors.time}</p>
                 )}
               </div>
 

@@ -96,7 +96,7 @@ const TasksChart = () => {
         </PieChart>
       </ResponsiveContainer>
 
-      <div className="grid grid-cols-2 gap-4 mt-6">
+      <div className="grid grid-cols-2 gap-4 mb-8">
         {data.map((entry, index) => (
           <div
             key={index}
