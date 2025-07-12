@@ -15,7 +15,7 @@ const EmptyState = ({ onCreateTask }) => {
 
         <h2 className="text-3xl font-bold text-[#061A40] mb-4 flex items-center justify-center">
           Ready to get organized?
-          <Rocket className="ml-2 h-8 w-8" />
+          <Rocket className="ml-2 h-8 w-8 animate-pulse" />
         </h2>
 
         <p className="text-gray-600 mb-8 text-lg">
@@ -25,7 +25,7 @@ const EmptyState = ({ onCreateTask }) => {
 
         <button
           onClick={onCreateTask}
-          className="text-sm md:text-lg bg-gradient-to-r from-[#4265D6] to-[#3254C5] text-white px-8 py-4 rounded-xl hover:from-[#3254C5] hover:to-[#2447B8] transition-all duration-200 font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 flex items-center justify-center"
+          className="cursor-pointer text-sm md:text-lg bg-gradient-to-r from-[#4265D6] to-[#3254C5] text-white px-8 py-4 rounded-xl hover:from-[#3254C5] hover:to-[#2447B8] transition-all duration-200 font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 flex items-center justify-center"
         >
           <Plus className="mr-2 h-5 w-5" />
           Create Your First Task

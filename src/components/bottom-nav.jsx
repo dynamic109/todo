@@ -17,7 +17,7 @@ const BottomNav = ({ currentPage, setCurrentPage }) => {
             <div
               onClick={() => setCurrentPage(item.name)}
               key={index}
-              className={`flex flex-col items-center ${
+              className={`flex flex-col items-center cursor-pointer ${
                 isActive && "transform scale-110 duration-300"
               }`}
             >

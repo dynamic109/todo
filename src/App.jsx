@@ -15,7 +15,10 @@ const App = () => {
     <TaskProvider>
       <div className="">
         <div>
-          <TopNav />
+          <TopNav
+            onNavigateToHome={() => setCurrentPage("Home")}
+            onNavigateToTasks={() => setCurrentPage("Tasks")}
+          />
         </div>
         <div className="max-w-[1200px] mx-auto font-jakarta h-screen overflow-y-auto mt-20 px-4">
           {currentPage === "Home" ? (

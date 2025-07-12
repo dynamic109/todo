@@ -72,7 +72,7 @@ const NewTask = ({ isOpen, onClose }) => {
   };
 
   return (
-    <>
+    <AnimatePresence>
       {isOpen && (
         <motion.div
           className="fixed inset-0 bg-transparent bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-50"
@@ -140,7 +140,7 @@ const NewTask = ({ isOpen, onClose }) => {
               </div>
 
               <div className="flex flex-col md:flex-row justify-between md:items-center gap-4">
-                <div>
+                <div className="w-full">
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     Start Time
                   </label>
@@ -160,7 +160,7 @@ const NewTask = ({ isOpen, onClose }) => {
                     </p>
                   )}
                 </div>
-                <div>
+                <div className="w-full">
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     End Time
                   </label>
@@ -182,7 +182,7 @@ const NewTask = ({ isOpen, onClose }) => {
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     Date
@@ -256,7 +256,7 @@ const NewTask = ({ isOpen, onClose }) => {
           </motion.div>
         </motion.div>
       )}
-    </>
+    </AnimatePresence>
   );
 };
 

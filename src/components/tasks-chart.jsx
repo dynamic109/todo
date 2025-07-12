@@ -130,7 +130,7 @@ const TasksChart = () => {
         </h2>
         <div className="bg-gradient-to-br from-blue-50 to-indigo-100 p-12 rounded-2xl text-center shadow-lg">
           <div className="max-w-md mx-auto">
-            <TrendingUp className="w-16 h-16 mx-auto mb-4 text-blue-500" />
+            <TrendingUp className="w-16 h-16 mx-auto mb-4 text-blue-500 animate-pulse" />
             <h3 className="text-2xl font-bold text-gray-700 mb-4">
               No Data Yet
             </h3>

@@ -68,7 +68,7 @@ const TasksLists = () => {
   if (tasksData.length === 0) {
     return (
       <div className="text-center py-12">
-        <ClipboardList className="w-16 h-16 mx-auto mb-4 text-gray-400" />
+        <ClipboardList className="w-16 h-16 mx-auto mb-4 text-gray-400 animate-pulse" />
         <h3 className="text-xl font-bold text-gray-700 mb-2">No Tasks Yet</h3>
         <p className="text-gray-500">Create your first task to see it here!</p>
       </div>

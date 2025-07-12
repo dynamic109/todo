@@ -38,7 +38,7 @@ const TaskCalendar = ({ events }) => {
     }
   }
 
-  console.log(taskStatus);
+  // console.log(taskStatus);
 
   return (
     <div className="w-fit overflow-x-auto mx-auto mb-10 bg-white font-jakarta">
