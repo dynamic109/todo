@@ -8,7 +8,7 @@ import NewTask from "./components/new-task";
 import { TaskProvider } from "./contexts/TaskContext";
 
 const App = () => {
-  const [currentPage, setCurrentPage] = useState("Home");
+  const [currentPage, setCurrentPage] = useState("Reports");
   const [isNewTaskOpen, setIsNewTaskOpen] = useState(false);
 
   return (
