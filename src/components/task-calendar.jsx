@@ -66,6 +66,7 @@ const TaskCalendar = ({ events }) => {
             <p className="text-sm text-gray-700 mb-4">
               📝 {selectedTask.description || "No description"}
             </p>
+            {/* <p>🕒 {selectedTask.time || "No set time"}</p> */}
             <p className={`text-xs font-medium`} style={{ color: statusColor }}>
               {taskStatus}
             </p>

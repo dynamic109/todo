@@ -1,19 +1,18 @@
 import React from "react";
+import { Eye } from "lucide-react";
 
-const MonthTasks = ({ tasksData }) => {
-  const currentMonth = String(new Date().getMonth() + 1).padStart(2, "0");
+const MonthTasks = ({ tasksData, onNavigateToTasks }) => {
+  // Use the already filtered tasksData passed from the parent component
   const allTasks = tasksData.flatMap((data) => data.tasks);
-  const monthTasks = allTasks.filter(
-    (task) => task.date.split("-")[1] === currentMonth
-  );
-  const groupedTasks = monthTasks.reduce((acc, task) => {
+  
+  const groupedTasks = allTasks.reduce((acc, task) => {
     if (!acc[task.date]) acc[task.date] = [];
     acc[task.date].push(task);
     return acc;
   }, {});
 
   return (
-    <div className="space-y-3 mt-6 mb-24">
+    <div className="space-y-3 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-6 mb-24">
       {Object.entries(groupedTasks).map(([date, taskArray]) => (
         <div
           key={date}
@@ -26,8 +25,12 @@ const MonthTasks = ({ tasksData }) => {
             </p>
           </div>
           <div>
-            <button className="border px-2 py-2 rounded-[3px] text-[#1A1D29] text-xs hover:text-white hover:bg-[#1A1D29] hover:border-[#1A1D29] transition-colors duration-300">
-              <a href="/#">View Tasks</a>
+            <button 
+              onClick={onNavigateToTasks}
+              className="bg-[#4265D6] text-white px-3 py-2 rounded-lg text-xs hover:bg-[#3254C5] transition-all duration-200 font-medium shadow-md hover:shadow-lg transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-300 flex items-center"
+            >
+              <Eye className="mr-1 h-3 w-3" />
+              View Tasks
             </button>
           </div>
         </div>

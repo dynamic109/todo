@@ -10,7 +10,7 @@ export const tasksData = [
         isCompleted: false,
       },
       {
-        date: "2025-07-07",
+        date: "2025-07-06",
         time: "10:30",
         title: "Code Review",
         text: "Review PRs for the authentication module.",
@@ -90,7 +90,7 @@ export const tasksData = [
         isCompleted: false,
       },
       {
-        date: "2025-07-10",
+        date: "2025-07-06",
         time: "16:30",
         title: "Compiler Notes",
         text: "Revise lexical analysis chapter.",

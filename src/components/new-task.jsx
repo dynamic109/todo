@@ -1,16 +1,22 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
+import { useTask } from "../hooks/useTask";
 
-const NewTask = ({ isOpen, onClose, onSave, categories }) => {
+const NewTask = ({ isOpen, onClose }) => {
+  const { addTask, getCategories } = useTask();
+  const categories = getCategories();
+
   const [taskData, setTaskData] = useState({
     title: "",
     text: "",
     date: "",
     category: "",
-    time: "",
-    isCompleted: false,
+    startTime: "",
+    endTime: "",
   });
+  const [newCategory, setNewCategory] = useState("");
+  const [showNewCategory, setShowNewCategory] = useState(false);
   const [errors, setErrors] = useState({});
 
   const validate = () => {
@@ -18,8 +24,10 @@ const NewTask = ({ isOpen, onClose, onSave, categories }) => {
     if (!taskData.title.trim()) newErrors.title = "Title is required";
     if (!taskData.text.trim()) newErrors.text = "Description is required";
     if (!taskData.date) newErrors.date = "Date is required";
-    if (!taskData.time) newErrors.category = "Time is required";
-    if (!taskData.category) newErrors.category = "Category is required";
+    if (!taskData.startTime) newErrors.startTime = "Start time is required";
+    if (!taskData.endTime) newErrors.endTime = "End time is required";
+    if (!taskData.category && !newCategory.trim())
+      newErrors.category = "Category is required";
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -29,7 +37,11 @@ const NewTask = ({ isOpen, onClose, onSave, categories }) => {
     const { name, value } = e.target;
     setTaskData((prev) => ({ ...prev, [name]: value }));
 
-    console.log(value);
+    if (name === "category" && value === "new") {
+      setShowNewCategory(true);
+    } else if (name === "category") {
+      setShowNewCategory(false);
+    }
 
     if (errors[name]) {
       setErrors((prev) => ({ ...prev, [name]: "" }));
@@ -39,21 +51,28 @@ const NewTask = ({ isOpen, onClose, onSave, categories }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validate()) {
-      onSave(taskData);
+      const finalCategory =
+        taskData.category === "new" ? newCategory : taskData.category;
+      const taskToSave = { ...taskData, category: finalCategory };
+
+      addTask(taskToSave);
+
       setTaskData({
         title: "",
         text: "",
-        date: new Date().toISOString().split("T")[0],
+        date: "",
         category: "",
-        time: new Date().getHours,
-        isCompleted: false,
+        startTime: "",
+        endTime: "",
       });
+      setNewCategory("");
+      setShowNewCategory(false);
       onClose();
     }
   };
 
   return (
-    <AnimatePresence>
+    <>
       {isOpen && (
         <motion.div
           className="fixed inset-0 bg-transparent bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-50"
@@ -120,23 +139,47 @@ const NewTask = ({ isOpen, onClose, onSave, categories }) => {
                 )}
               </div>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Time
-                </label>
-                <input
-                  type="time"
-                  name="time"
-                  value={taskData.time}
-                  onChange={handleChange}
-                  className={`w-full px-4 py-2 border ${
-                    errors.time ? "border-red-500" : "border-gray-300"
-                  } rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4265D6]`}
-                  placeholder="Task time"
-                />
-                {errors.time && (
-                  <p className="mt-1 text-xs text-red-500">{errors.time}</p>
-                )}
+              <div className="flex flex-col md:flex-row justify-between md:items-center gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Start Time
+                  </label>
+                  <input
+                    type="time"
+                    name="startTime"
+                    value={taskData.startTime}
+                    onChange={handleChange}
+                    className={`w-full px-4 py-2 border ${
+                      errors.startTime ? "border-red-500" : "border-gray-300"
+                    } rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4265D6]`}
+                    placeholder="Task startTime"
+                  />
+                  {errors.startTime && (
+                    <p className="mt-1 text-xs text-red-500">
+                      {errors.startTime}
+                    </p>
+                  )}
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    End Time
+                  </label>
+                  <input
+                    type="time"
+                    name="endTime"
+                    value={taskData.endTime}
+                    onChange={handleChange}
+                    className={`w-full px-4 py-2 border ${
+                      errors.endTime ? "border-red-500" : "border-gray-300"
+                    } rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4265D6]`}
+                    placeholder="Task endTime"
+                  />
+                  {errors.endTime && (
+                    <p className="mt-1 text-xs text-red-500">
+                      {errors.endTime}
+                    </p>
+                  )}
+                </div>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
@@ -172,10 +215,11 @@ const NewTask = ({ isOpen, onClose, onSave, categories }) => {
                   >
                     <option value="">Select category</option>
                     {categories?.map((category, index) => (
-                      <option key={index} value={category.category}>
-                        {category.category}
+                      <option key={index} value={category}>
+                        {category}
                       </option>
                     ))}
+                    <option value="new">+ Create New Category</option>
                   </select>
                   {errors.category && (
                     <p className="mt-1 text-xs text-red-500">
@@ -184,6 +228,21 @@ const NewTask = ({ isOpen, onClose, onSave, categories }) => {
                   )}
                 </div>
               </div>
+
+              {showNewCategory && (
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    New Category Name
+                  </label>
+                  <input
+                    type="text"
+                    value={newCategory}
+                    onChange={(e) => setNewCategory(e.target.value)}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4265D6]"
+                    placeholder="Enter category name"
+                  />
+                </div>
+              )}
 
               <div className="pt-2">
                 <button
@@ -197,7 +256,7 @@ const NewTask = ({ isOpen, onClose, onSave, categories }) => {
           </motion.div>
         </motion.div>
       )}
-    </AnimatePresence>
+    </>
   );
 };
 
