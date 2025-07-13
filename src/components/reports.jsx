@@ -61,7 +61,7 @@ const Reports = ({ setIsNewTaskOpen }) => {
 
   const insights = calculateInsights();
 
-  console.log(insights);
+  // console.log(insights);
 
   return (
     <div className="space-y-8 pb-20">

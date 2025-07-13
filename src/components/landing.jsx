@@ -117,23 +117,25 @@ const Landing = ({ onCreateTask, onNavigateToTasks, setIsNewTaskOpen }) => {
             onNavigateToTasks={onNavigateToTasks}
           />
         ) : (
-          <div className="text-center py-12 bg-gray-50 rounded-lg border-2 border-dashed border-gray-300">
-            <div className="max-w-md mx-auto">
-              <Calendar className="w-16 h-16 mx-auto mb-4 text-gray-400" />
-              <h3 className="text-xl font-bold text-gray-700 mb-2">
-                No tasks for {selectedMonth || "All Months"}
-              </h3>
-              <p className="text-gray-500 mb-4">
-                {selectedMonth
-                  ? `You don't have any tasks scheduled for ${selectedMonth}. Try selecting a different month or create a new task with a ${selectedMonth} date.`
-                  : "You don't have any tasks yet. Create your first task to get started!"}
-              </p>
-              <button
-                onClick={onCreateTask}
-                className="bg-[#4265D6] text-white px-4 py-2 rounded-lg hover:bg-[#3254C5] transition-colors font-medium"
-              >
-                Create Task
-              </button>
+          <div className="pb-24 md:pb-0">
+            <div className="text-center py-12 bg-gray-50 rounded-lg border-2 border-dashed border-gray-300">
+              <div className="max-w-md mx-auto">
+                <Calendar className="w-16 h-16 mx-auto mb-4 text-gray-400" />
+                <h3 className="text-xl font-bold text-gray-700 mb-2">
+                  No tasks for {selectedMonth || "All Months"}
+                </h3>
+                <p className="text-gray-500 mb-4">
+                  {selectedMonth
+                    ? `You don't have any tasks scheduled for ${selectedMonth}. Try selecting a different month or create a new task with a ${selectedMonth} date.`
+                    : "You don't have any tasks yet. Create your first task to get started!"}
+                </p>
+                <button
+                  onClick={onCreateTask}
+                  className="bg-[#4265D6] text-white px-4 py-2 rounded-lg hover:bg-[#3254C5] transition-colors font-medium"
+                >
+                  Create Task
+                </button>
+              </div>
             </div>
           </div>
         )}

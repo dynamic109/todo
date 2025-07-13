@@ -3,17 +3,16 @@ import "swiper/css";
 import Card from "./card";
 import React from "react";
 import { Autoplay } from "swiper/modules";
+import { ClipboardList } from "lucide-react";
 
 const TasksSlides = ({ tasksData }) => {
   const currentDate = new Date().toISOString().split("T")[0];
 
-  // Collect all today's tasks from all categories
   const todaysTasks =
     tasksData?.flatMap((category) =>
       category.tasks.filter((task) => task.date === currentDate)
     ) || [];
 
-  // Check if we have any tasks for today
   const hasTasks = todaysTasks.length > 0;
 
   return (
@@ -36,8 +35,14 @@ const TasksSlides = ({ tasksData }) => {
           ))}
         </Swiper>
       ) : (
-        <div className="text-black w-full p-6 bg-white rounded-lg shadow-md text-center">
-          No tasks for today
+        <div className=" w-full p-6 bg-white rounded-lg shadow-lg text-center">
+          <div className="mb-8 animate-bounce">
+            <ClipboardList className="w-16 h-16 mx-auto mb-4 text-gray-400 animate-pulse" />
+          </div>
+          <p className="text-[#061A40] text-xl font-semibold">
+            {" "}
+            No tasks for today 😪
+          </p>
         </div>
       )}
     </div>

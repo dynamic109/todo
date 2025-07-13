@@ -27,20 +27,15 @@ import { useTask } from "../hooks/useTask";
 const calculateTaskStats = (tasksData) => {
   const stats = { pending: 0, completed: 0, notCompleted: 0 };
 
-  tasksData.forEach((category) => {
-    category.tasks.forEach((task) => {
+  tasksData.forEach((taskObj) => {
+    // console.log(taskObj);
+    taskObj.tasks.forEach((task) => {
       if (task.isCompleted) {
         stats.completed++;
       } else {
         const now = new Date();
+        // console.log(now);
         const taskDate = new Date(task.date);
-
-        if (task.endTime) {
-          const [hours, minutes] = task.endTime.split(":");
-          taskDate.setHours(parseInt(hours), parseInt(minutes));
-        } else {
-          taskDate.setHours(23, 59, 59, 999);
-        }
 
         if (now > taskDate) {
           stats.notCompleted++;
@@ -61,14 +56,27 @@ const calculateTaskStats = (tasksData) => {
 const calculateCategoryStats = (tasksData) => {
   const categoryStats = {};
 
-  tasksData.forEach((category) => {
-    const completed = category.tasks.filter((task) => task.isCompleted).length;
-    const total = category.tasks.length;
+  tasksData.forEach((taskObj) => {
+    const currentTime = new Date().getHours();
+
+    console.log(currentTime);
+
+    const completed = taskObj.tasks.filter((task) => task.isCompleted).length;
+    // const notCompleted = taskObj.tasks.filter((task) => {
+    //   console.log(parseInt(task.endTime));
+    //   return currentTime > parseInt(task.endTime) || !task.isCompleted;
+    // }).length;
+    const total = taskObj.tasks.length;
     const pending = total - completed;
 
-    categoryStats[category.category] = {
-      name: category.category,
+    // console.log(
+    //   `total: ${total}, pending: ${pending}, completed: ${completed}, Not completed: ${notCompleted}`
+    // );
+
+    categoryStats[taskObj.category] = {
+      name: taskObj.category,
       completed,
+      // notCompleted,
       pending,
       total,
     };
@@ -249,7 +257,12 @@ const TasksChart = () => {
                   }}
                 />
                 <Bar dataKey="completed" fill="#16A34A" radius={[4, 4, 0, 0]} />
-                <Bar dataKey="pending" fill="#F2AC20" radius={[4, 4, 0, 0]} />
+                {/* <Bar
+                  dataKey="notCompleted"
+                  fill="#DC2626"
+                  radius={[4, 4, 0, 0]}
+                /> */}
+                <Bar dataKey="pending" fill="#DC2626" radius={[4, 4, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </div>

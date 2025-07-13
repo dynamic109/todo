@@ -7,11 +7,13 @@ import {
   CheckCircle2,
   Circle,
   ClipboardList,
+  EllipsisVertical,
 } from "lucide-react";
 
 const TasksLists = () => {
   const { tasksData, updateTaskStatus, TASK_STATUS } = useTask();
   const [selectedCategory, setSelectedCategory] = useState("");
+  // const [openMenu, setOpenMenu] = useState(false);
 
   function handleChange(event) {
     setSelectedCategory(event.target.value);
@@ -61,10 +63,25 @@ const TasksLists = () => {
   };
 
   const handleTaskStatusToggle = (taskId, categoryName, currentStatus) => {
+    // console.log(taskId, categoryName, currentStatus);
     const newCompletionStatus = currentStatus !== TASK_STATUS.COMPLETED;
     updateTaskStatus(taskId, categoryName, newCompletionStatus);
   };
 
+  // const handleMenuToggle = (taskId) => {
+  //   filteredTasks.map((taskObj) => {
+  //     taskObj.tasks.map((task) => {
+  //       task.id === taskId && setOpenMenu(!openMenu);
+
+  //       // console.log("Task ID:", task);
+  //     });
+  //   });
+  //   // setOpenMenu(!openMenu);
+  // };
+
+  // const handleTaskDelete = (taskId, taskTitle) => {
+  //   deleteTask(taskId, taskTitle);
+  // };
   if (tasksData.length === 0) {
     return (
       <div className="text-center py-12">
@@ -97,13 +114,13 @@ const TasksLists = () => {
       </div>
 
       <div className="space-y-4">
-        {filteredTasks.map((category) => (
-          <div key={category.category} className="space-y-4">
+        {filteredTasks.map((taskObj) => (
+          <div key={taskObj.category} className="space-y-4">
             <h3 className="text-lg font-semibold text-[#061A40] border-b border-gray-200 pb-2">
-              {category.category} ({category.tasks.length} tasks)
+              {taskObj.category} ({taskObj.tasks.length} tasks)
             </h3>
 
-            {category.tasks.map((task, index) => {
+            {taskObj.tasks.map((task, index) => {
               const taskStatus = getTaskStatus(task);
               const statusColor = getStatusColor(taskStatus);
               const bgImage = getStatusImage(taskStatus);
@@ -116,15 +133,27 @@ const TasksLists = () => {
                   }}
                   className="relative border-l-6 shadow-lg rounded-lg bg-white hover:shadow-xl transition-shadow duration-200 border border-gray-100"
                 >
-                  <div className="p-6 flex items-center justify-between">
+                  <div className="py-6 px-3 lg:px-6 flex items-center justify-between">
                     <div className="flex-1 space-y-3">
-                      <div className="flex items-center justify-between">
-                        <h4 className="font-bold text-lg text-[#061A40]">
+                      <div className="flex items-start md:items-center justify-between">
+                        <h4 className="font-bold text-base md:text-lg text-[#061A40]">
                           {task.title}
                         </h4>
-                        <div className="flex items-center gap-2">
-                          <span
-                            className={`px-3 py-1 rounded-full text-xs font-medium ${
+                        <div className="flex flex-col-reverse md:flex-row items-end md:items-start justify-end gap-2 z-20">
+                          {/* {openMenu && (
+                            <div className="flex flex-col gap-2 absolute right-0 top-0 bg-white shadow-lg rounded-lg p-2">
+                              <button>Edit</button>
+                              <button
+                                onClick={() =>
+                                  handleTaskDelete(task.id, task.title)
+                                }
+                              >
+                                Delete
+                              </button>
+                            </div>
+                          )} */}
+                          <p
+                            className={`px-2 py-1 rounded-full text-[10px] md:text-xs font-medium ${
                               taskStatus === TASK_STATUS.COMPLETED
                                 ? "bg-green-100 text-green-800"
                                 : taskStatus === TASK_STATUS.NOT_COMPLETED
@@ -133,11 +162,15 @@ const TasksLists = () => {
                             }`}
                           >
                             {taskStatus.replace("_", " ").toUpperCase()}
-                          </span>
+                          </p>
+                          {/* <EllipsisVertical
+                            className="text-[#061A40]"
+                            // onClick={() => handleMenuToggle(task.id)}
+                          /> */}
                         </div>
                       </div>
 
-                      <div className="flex items-center gap-4 text-sm text-gray-600">
+                      <div className="flex items-center gap-4 text-xs md:text-sm text-gray-600">
                         <span className="flex items-center gap-1">
                           <Calendar className="h-4 w-4" />
                           {task.date}
@@ -157,11 +190,11 @@ const TasksLists = () => {
                           onClick={() =>
                             handleTaskStatusToggle(
                               task.id,
-                              category.category,
+                              taskObj.category,
                               taskStatus
                             )
                           }
-                          className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-2 ${
+                          className={`px-4 py-2 rounded-lg text-xs md:text-sm font-medium transition-colors flex items-center gap-2 ${
                             task.isCompleted
                               ? "bg-gray-100 text-gray-600 hover:bg-gray-200"
                               : "bg-[#4265D6] text-white hover:bg-[#3254C5]"
@@ -182,7 +215,7 @@ const TasksLists = () => {
                       </div>
                     </div>
 
-                    <div className="ml-6 flex-shrink-0 max-w-[120px] absolute right-0 md:static">
+                    <div className="ml-6 flex-shrink-0 max-w-[120px] absolute right-0">
                       <img
                         src={bgImage}
                         alt={`Task ${taskStatus}`}

@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect, useCallback } from "react";
+import React, { createContext, useState, useCallback } from "react";
 
 const TASK_STATUS = {
   PENDING: "pending",
@@ -26,11 +26,17 @@ const TaskProvider = ({ children }) => {
 
   const [tasksData, setTasksData] = useState([]);
 
+  // console.log("Initial tasksData:", tasksData);
+
+  const deleteTask = (taskId, categoryName) => {
+    console.log("Delete task:", taskId, categoryName);
+    // setTasksData(())
+  };
+
   const addTask = (newTask) => {
     const taskWithId = {
       ...newTask,
       id: Date.now().toString(),
-      createdAt: new Date().toISOString(),
       isCompleted: false,
       status: TASK_STATUS.PENDING,
     };
@@ -61,11 +67,11 @@ const TaskProvider = ({ children }) => {
 
   const updateTaskStatus = (taskId, categoryName, isCompleted) => {
     setTasksData((prevData) => {
-      return prevData.map((category) => {
-        if (category.category === categoryName) {
+      return prevData.map((taskObj) => {
+        if (taskObj.category === categoryName) {
           return {
-            ...category,
-            tasks: category.tasks.map((task) => {
+            ...taskObj,
+            tasks: taskObj.tasks.map((task) => {
               if (task.id === taskId) {
                 const updatedTask = { ...task, isCompleted };
                 return {
@@ -77,7 +83,7 @@ const TaskProvider = ({ children }) => {
             }),
           };
         }
-        return category;
+        return taskObj;
       });
     });
   };
@@ -86,30 +92,31 @@ const TaskProvider = ({ children }) => {
     return tasksData.map((category) => category.category);
   };
 
-  useEffect(() => {
-    const updateStatuses = () => {
-      setTasksData((prevData) => {
-        return prevData.map((category) => ({
-          ...category,
-          tasks: category.tasks.map((task) => ({
-            ...task,
-            status: calculateTaskStatus(task),
-          })),
-        }));
-      });
-    };
+  // useEffect(() => {
+  //   const updateStatuses = () => {
+  //     setTasksData((prevData) => {
+  //       return prevData.map((category) => ({
+  //         ...category,
+  //         tasks: category.tasks.map((task) => ({
+  //           ...task,
+  //           status: calculateTaskStatus(task),
+  //         })),
+  //       }));
+  //     });
+  //   };
 
-    updateStatuses();
+  //   updateStatuses();
 
-    const interval = setInterval(updateStatuses, 60000);
+  //   const interval = setInterval(updateStatuses, 60000);
 
-    return () => clearInterval(interval);
-  }, [calculateTaskStatus]);
+  //   return () => clearInterval(interval);
+  // }, [calculateTaskStatus]);
 
   const value = {
     tasksData,
     addTask,
     updateTaskStatus,
+    deleteTask,
     getCategories,
     TASK_STATUS,
   };
