@@ -1,5 +1,4 @@
-import React from "react";
-import { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useTask } from "../hooks/useTask";
 import {
   Calendar,
@@ -9,15 +8,21 @@ import {
   ClipboardList,
   EllipsisVertical,
 } from "lucide-react";
+import EditTask from "./edit-task";
 
 const TasksLists = () => {
-  const { tasksData, updateTaskStatus, TASK_STATUS } = useTask();
+  const { tasksData, updateTaskStatus, TASK_STATUS, deleteTask } = useTask();
   const [selectedCategory, setSelectedCategory] = useState("");
-  // const [openMenu, setOpenMenu] = useState(false);
+  const [clickedTaskId, setClickedTaskId] = useState("");
+  const [isEdit, setIsEdit] = useState(false);
+  const [selectedTaskData, setSelectedTaskData] = useState({
+    task: null,
+    category: null,
+  });
 
-  function handleChange(event) {
+  const handleChange = (event) => {
     setSelectedCategory(event.target.value);
-  }
+  };
 
   const getTaskStatus = (task) => {
     if (task.isCompleted) return TASK_STATUS.COMPLETED;
@@ -29,11 +34,7 @@ const TasksLists = () => {
       taskDate.setHours(parseInt(hours), parseInt(minutes));
     }
 
-    if (now > taskDate) {
-      return TASK_STATUS.NOT_COMPLETED;
-    } else {
-      return TASK_STATUS.PENDING;
-    }
+    return now > taskDate ? TASK_STATUS.NOT_COMPLETED : TASK_STATUS.PENDING;
   };
 
   const getStatusColor = (status) => {
@@ -43,7 +44,6 @@ const TasksLists = () => {
       case TASK_STATUS.NOT_COMPLETED:
         return "#DC2626";
       case TASK_STATUS.PENDING:
-        return "#F2AC20";
       default:
         return "#F2AC20";
     }
@@ -56,32 +56,37 @@ const TasksLists = () => {
       case TASK_STATUS.NOT_COMPLETED:
         return "/not-completed.svg";
       case TASK_STATUS.PENDING:
-        return "/pending.svg";
       default:
         return "/pending.svg";
     }
   };
 
   const handleTaskStatusToggle = (taskId, categoryName, currentStatus) => {
-    // console.log(taskId, categoryName, currentStatus);
     const newCompletionStatus = currentStatus !== TASK_STATUS.COMPLETED;
     updateTaskStatus(taskId, categoryName, newCompletionStatus);
   };
 
-  // const handleMenuToggle = (taskId) => {
-  //   filteredTasks.map((taskObj) => {
-  //     taskObj.tasks.map((task) => {
-  //       task.id === taskId && setOpenMenu(!openMenu);
+  const handleTaskDelete = (taskId) => {
+    deleteTask(taskId);
+  };
 
-  //       // console.log("Task ID:", task);
-  //     });
-  //   });
-  //   // setOpenMenu(!openMenu);
-  // };
+  const dropdownRef = useRef(null);
 
-  // const handleTaskDelete = (taskId, taskTitle) => {
-  //   deleteTask(taskId, taskTitle);
-  // };
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setClickedTaskId("");
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const filteredTasks = tasksData.filter((category) =>
+    selectedCategory ? category.category === selectedCategory : true
+  );
+
   if (tasksData.length === 0) {
     return (
       <div className="text-center py-12">
@@ -91,10 +96,6 @@ const TasksLists = () => {
       </div>
     );
   }
-
-  const filteredTasks = tasksData.filter((category) =>
-    selectedCategory ? category.category === selectedCategory : true
-  );
 
   return (
     <div>
@@ -128,9 +129,7 @@ const TasksLists = () => {
               return (
                 <div
                   key={index}
-                  style={{
-                    borderColor: statusColor,
-                  }}
+                  style={{ borderColor: statusColor }}
                   className="relative border-l-6 shadow-lg rounded-lg bg-white hover:shadow-xl transition-shadow duration-200 border border-gray-100"
                 >
                   <div className="py-6 px-3 lg:px-6 flex items-center justify-between">
@@ -140,18 +139,28 @@ const TasksLists = () => {
                           {task.title}
                         </h4>
                         <div className="flex flex-col-reverse md:flex-row items-end md:items-start justify-end gap-2 z-20">
-                          {/* {openMenu && (
-                            <div className="flex flex-col gap-2 absolute right-0 top-0 bg-white shadow-lg rounded-lg p-2">
-                              <button>Edit</button>
+                          {task.id === clickedTaskId && (
+                            <div
+                              ref={dropdownRef}
+                              className="flex flex-col gap-2 absolute right-0 top-0 bg-white shadow-lg rounded-lg p-2 z-50"
+                            >
                               <button
-                                onClick={() =>
-                                  handleTaskDelete(task.id, task.title)
-                                }
+                                onClick={() => {
+                                  setSelectedTaskData({
+                                    task,
+                                    category: taskObj.category,
+                                  });
+                                  setIsEdit(true);
+                                  setClickedTaskId("");
+                                }}
                               >
+                                Edit
+                              </button>
+                              <button onClick={() => handleTaskDelete(task.id)}>
                                 Delete
                               </button>
                             </div>
-                          )} */}
+                          )}
                           <p
                             className={`px-2 py-1 rounded-full text-[10px] md:text-xs font-medium ${
                               taskStatus === TASK_STATUS.COMPLETED
@@ -163,10 +172,11 @@ const TasksLists = () => {
                           >
                             {taskStatus.replace("_", " ").toUpperCase()}
                           </p>
-                          {/* <EllipsisVertical
-                            className="text-[#061A40]"
-                            // onClick={() => handleMenuToggle(task.id)}
-                          /> */}
+                          {taskStatus !== TASK_STATUS.COMPLETED && (
+                            <button onClick={() => setClickedTaskId(task.id)}>
+                              <EllipsisVertical className="text-[#061A40]" />
+                            </button>
+                          )}
                         </div>
                       </div>
 
@@ -229,6 +239,18 @@ const TasksLists = () => {
           </div>
         ))}
       </div>
+
+      {isEdit && selectedTaskData.task && (
+        <EditTask
+          isOpen={isEdit}
+          onClose={() => {
+            setIsEdit(false);
+            setSelectedTaskData({ task: null, category: null });
+          }}
+          task={selectedTaskData.task}
+          category={selectedTaskData.category}
+        />
+      )}
     </div>
   );
 };
