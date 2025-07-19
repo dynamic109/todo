@@ -9,7 +9,7 @@ import { TaskProvider } from "./contexts/TaskContext";
 import { Bounce, ToastContainer } from "react-toastify";
 
 const App = () => {
-  const [currentPage, setCurrentPage] = useState("Homsadfe");
+  const [currentPage, setCurrentPage] = useState("Home");
   const [isNewTaskOpen, setIsNewTaskOpen] = useState(false);
 
   return (
