@@ -142,9 +142,10 @@ const TasksLists = () => {
                           {task.id === clickedTaskId && (
                             <div
                               ref={dropdownRef}
-                              className="flex flex-col gap-2 absolute right-0 top-0 bg-white shadow-lg rounded-lg p-2 z-50"
+                              className="flex flex-col gap-2 absolute right-0 top-0 bg-white shadow-lg z-50 text-xs font-manrope font-medium"
                             >
                               <button
+                                className="text-left hover:bg-gray-200 py-2 pr-4 pl-1"
                                 onClick={() => {
                                   setSelectedTaskData({
                                     task,
@@ -156,7 +157,10 @@ const TasksLists = () => {
                               >
                                 Edit
                               </button>
-                              <button onClick={() => handleTaskDelete(task.id)}>
+                              <button
+                                className="py-2 pr-4 pl-1 hover:bg-gray-200"
+                                onClick={() => handleTaskDelete(task.id)}
+                              >
                                 Delete
                               </button>
                             </div>

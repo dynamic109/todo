@@ -1,4 +1,5 @@
 import React, { createContext, useState, useCallback } from "react";
+import { toast } from "react-toastify";
 
 const TASK_STATUS = {
   PENDING: "pending",
@@ -24,7 +25,136 @@ const TaskProvider = ({ children }) => {
     }
   }, []);
 
-  const [tasksData, setTasksData] = useState([]);
+  const [tasksData, setTasksData] = useState([
+    {
+      category: "Work",
+      tasks: [
+        {
+          id: "work-1",
+          date: "2025-07-20",
+          startTime: "09:00",
+          endTime: "23:00",
+          title: "Team Meeting",
+          text: "Discuss project milestones and assign new tasks.",
+          isCompleted: false,
+        },
+        {
+          id: "work-2",
+          date: "2025-07-22",
+          startTime: "10:30",
+          endTime: "11:30",
+          title: "Code Review",
+          text: "Review PRs for the authentication module.",
+          isCompleted: true,
+        },
+        {
+          id: "work-3",
+          date: "2025-07-23",
+          startTime: "14:00",
+          endTime: "15:00",
+          title: "Design Feedback",
+          text: "Give feedback on the new dashboard mockup.",
+          isCompleted: true,
+        },
+      ],
+    },
+    {
+      category: "Personal",
+      tasks: [
+        {
+          id: "personal-1",
+          date: "2025-07-24",
+          startTime: "17:00",
+          endTime: "18:00",
+          title: "Grocery Shopping",
+          text: "Buy ingredients for the weekend dinner party.",
+          isCompleted: false,
+        },
+        {
+          id: "personal-2",
+          date: "2025-07-25",
+          startTime: "18:00",
+          endTime: "19:00",
+          title: "Call Mom",
+          text: "Catch up and check in on her health.",
+          isCompleted: true,
+        },
+        {
+          id: "personal-3",
+          date: "2025-07-20",
+          startTime: "07:00",
+          endTime: "08:00",
+          title: "Exercise",
+          text: "Go for a 30‑minute run.",
+          isCompleted: false,
+        },
+      ],
+    },
+    {
+      category: "Learning",
+      tasks: [
+        {
+          id: "learning-1",
+          date: "2025-07-21",
+          startTime: "15:00",
+          endTime: "16:00",
+          title: "React Tutorial",
+          text: "Finish section on useContext and useReducer hooks.",
+          isCompleted: false,
+        },
+        {
+          id: "learning-2",
+          date: "2025-07-23",
+          startTime: "16:30",
+          endTime: "17:30",
+          title: "Compiler Notes",
+          text: "Revise lexical analysis chapter.",
+          isCompleted: false,
+        },
+        {
+          id: "learning-3",
+          date: "2025-07-25",
+          startTime: "09:30",
+          endTime: "10:30",
+          title: "SQL Practice",
+          text: "Solve 5 queries from HackerRank.",
+          isCompleted: true,
+        },
+      ],
+    },
+    {
+      category: "Health & Wellness",
+      tasks: [
+        {
+          id: "health-1",
+          date: "2025-07-22",
+          startTime: "08:00",
+          endTime: "09:00",
+          title: "Drink Water",
+          text: "Track 8 cups of water today.",
+          isCompleted: true,
+        },
+        {
+          id: "health-2",
+          date: "2025-07-24",
+          startTime: "06:30",
+          endTime: "07:30",
+          title: "Meditation",
+          text: "Practice breathing exercises for 10 minutes.",
+          isCompleted: false,
+        },
+        {
+          id: "health-3",
+          date: "2025-07-20",
+          startTime: "17:30",
+          endTime: "18:30",
+          title: "Meal Prep",
+          text: "Prepare healthy meals for the week.",
+          isCompleted: false,
+        },
+      ],
+    },
+  ]);
 
   const deleteTask = (taskId) => {
     const updatedTasksData = tasksData.map((category) => {
@@ -33,7 +163,7 @@ const TaskProvider = ({ children }) => {
         tasks: category.tasks.filter((task) => task.id !== taskId),
       };
     });
-    alert(`Task deleted successfully✅`);
+    toast.success("Task deleted successfully");
     setTasksData(updatedTasksData);
     console.log("updated task data:", updatedTasksData);
   };
@@ -52,7 +182,7 @@ const TaskProvider = ({ children }) => {
         return cat;
       })
     );
-    alert(`Task updated successfully✅`);
+    toast.success(`Task updated successfully`);
   };
 
   const addTask = (newTask) => {
@@ -85,7 +215,7 @@ const TaskProvider = ({ children }) => {
         ];
       }
     });
-    alert(`New task successfully created🎉🎉`);
+    toast.success(`New task successfully created🎉🎉`);
   };
 
   const updateTaskStatus = (taskId, categoryName, isCompleted) => {

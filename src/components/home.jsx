@@ -6,7 +6,7 @@ import { useTask } from "../hooks/useTask";
 import { Calendar } from "lucide-react";
 import NewTaskButton from "./new-task-button";
 
-const Landing = ({ onCreateTask, onNavigateToTasks, setIsNewTaskOpen }) => {
+const Home = ({ onCreateTask, onNavigateToTasks, setIsNewTaskOpen }) => {
   const { tasksData } = useTask();
   const date = new Date();
 
@@ -146,4 +146,4 @@ const Landing = ({ onCreateTask, onNavigateToTasks, setIsNewTaskOpen }) => {
   );
 };
 
-export default Landing;
+export default Home;

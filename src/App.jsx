@@ -2,13 +2,14 @@ import React, { useState } from "react";
 import TopNav from "./components/top-nav";
 import BottomNav from "./components/bottom-nav";
 import Task from "./components/task";
-import Landing from "./components/landing";
+import Home from "./components/home";
 import Reports from "./components/reports";
 import NewTask from "./components/new-task";
 import { TaskProvider } from "./contexts/TaskContext";
+import { Bounce, ToastContainer } from "react-toastify";
 
 const App = () => {
-  const [currentPage, setCurrentPage] = useState("Home");
+  const [currentPage, setCurrentPage] = useState("Homsadfe");
   const [isNewTaskOpen, setIsNewTaskOpen] = useState(false);
 
   return (
@@ -21,9 +22,15 @@ const App = () => {
           />
         </div>
         <div className="max-w-[1200px] mx-auto font-jakarta h-screen overflow-y-auto mt-20 px-4">
+          <ToastContainer
+            autoClose={3000}
+            hideProgressBar={false}
+            draggable
+            pauseOnHover
+          />
           {currentPage === "Home" ? (
             <div className="space-y-6">
-              <Landing
+              <Home
                 onCreateTask={() => setIsNewTaskOpen(true)}
                 onNavigateToTasks={() => setCurrentPage("Tasks")}
                 setIsNewTaskOpen={setIsNewTaskOpen}
