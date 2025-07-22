@@ -2,7 +2,7 @@ import { PieChartIcon } from "lucide-react";
 import React from "react";
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
 
-const CPieChart = ({ pieData, renderCustomizedLabel }) => {
+const CPieChart = ({ pieData }) => {
   return (
     <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
       <h3 className="text-lg font-bold text-[#061A40] mb-6 flex items-center">
@@ -17,7 +17,6 @@ const CPieChart = ({ pieData, renderCustomizedLabel }) => {
               cx="50%"
               cy="50%"
               labelLine={false}
-              label={renderCustomizedLabel}
               outerRadius={100}
               fill="#8884d8"
               dataKey="value"

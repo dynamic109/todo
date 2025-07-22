@@ -6,7 +6,7 @@ import Home from "./components/home";
 import Reports from "./components/reports";
 import NewTask from "./components/new-task";
 import { TaskProvider } from "./contexts/TaskContext";
-import { Bounce, ToastContainer } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 
 const App = () => {
   const [currentPage, setCurrentPage] = useState("Home");

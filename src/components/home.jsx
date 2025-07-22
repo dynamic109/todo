@@ -16,10 +16,10 @@ const Home = ({ onCreateTask, onNavigateToTasks, setIsNewTaskOpen }) => {
   let greetings = "";
 
   hours < 12
-    ? (greetings = "Good morning 🌞")
+    ? (greetings = "Good morning🌞")
     : hours < 18
-    ? (greetings = "Good afternoon☀️ ")
-    : (greetings = "Good evening 🌙 ");
+    ? (greetings = "Good afternoon☀️")
+    : (greetings = "Good evening🌙");
 
   const handleChange = (e) => {
     setSelectedMonth(e.target.value);
@@ -84,7 +84,7 @@ const Home = ({ onCreateTask, onNavigateToTasks, setIsNewTaskOpen }) => {
   }
 
   return (
-    <>
+    <div className="space-y-6">
       <div className="space-y-2">
         <div>
           <h1 className="text-2xl font-bold text-[#061A40]">{greetings}</h1>
@@ -142,7 +142,7 @@ const Home = ({ onCreateTask, onNavigateToTasks, setIsNewTaskOpen }) => {
       </div>
 
       <NewTaskButton setIsNewTaskOpen={setIsNewTaskOpen} />
-    </>
+    </div>
   );
 };
 

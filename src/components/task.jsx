@@ -8,15 +8,19 @@ const Task = ({ setIsNewTaskOpen }) => {
   const { tasksData } = useTask();
 
   const calendarEvents = tasksData.reduce((acc, category) => {
+    // console.log(category);
     const events = category.tasks.map((task) => ({
       title: task.title,
       date: task.date,
       description: task.text,
       isCompleted: task.isCompleted,
+      taskStartTime: task.startTime,
+      taskEndTime: task.endTime,
     }));
     return acc.concat(events);
   }, []);
-  // console.log(calendarEvents);
+  console.log(calendarEvents);
+
 
   return (
     <>

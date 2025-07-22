@@ -3,6 +3,7 @@ import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 
 const TaskCalendar = ({ events }) => {
+  console.log(events);
   const [selectedTask, setSelectedTask] = useState(null);
   let taskStatus = "";
   let statusColor = "";
@@ -12,7 +13,7 @@ const TaskCalendar = ({ events }) => {
 
   const handleEventClick = (clickInfo) => {
     const { title, start, extendedProps } = clickInfo.event;
-    console.log(start);
+    // console.log(start);
 
     setSelectedTask({
       title,
@@ -63,10 +64,12 @@ const TaskCalendar = ({ events }) => {
             <p className="text-sm text-gray-700 mb-1">
               📅 Date: {selectedTask.date}
             </p>
-            <p className="text-sm text-gray-700 mb-4">
+            <p className="text-sm text-gray-700 mb-1">
               📝 {selectedTask.description || "No description"}
             </p>
-            {/* <p>🕒 {selectedTask.time || "No set time"}</p> */}
+            <p className="text-xs text-gray-700 mb-4">
+              🕒 {selectedTask.taskStartTime} - {selectedTask.taskEndTime}
+            </p>
             <p className={`text-xs font-medium`} style={{ color: statusColor }}>
               {taskStatus}
             </p>

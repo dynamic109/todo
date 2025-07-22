@@ -59,32 +59,6 @@ const calculateTaskStats = (tasksData) => {
   return { pieData, barData, totalStats };
 };
 
-const RADIAN = Math.PI / 180;
-const renderCustomizedLabel = ({
-  cx,
-  cy,
-  midAngle,
-  innerRadius,
-  outerRadius,
-  percent,
-}) => {
-  const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
-  const x = cx + radius * Math.cos(-midAngle * RADIAN);
-  const y = cy + radius * Math.sin(-midAngle * RADIAN);
-
-  return (
-    <text
-      x={x}
-      y={y}
-      fill="white"
-      textAnchor={x > cx ? "start" : "end"}
-      dominantBaseline="central"
-    >
-      {`${(percent * 100).toFixed(0)}%`}
-    </text>
-  );
-};
-
 const TasksChart = () => {
   const { tasksData } = useTask();
 
@@ -130,10 +104,7 @@ const TasksChart = () => {
         completionRate={completionRate}
       />
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <CPieChart
-          pieData={pieData}
-          renderCustomizedLabel={renderCustomizedLabel}
-        />
+        <CPieChart pieData={pieData} />
         <CBarChart barData={barData} STATUS_COLORS={STATUS_COLORS} />
       </div>
       <DetailedBreakdown pieData={pieData} />

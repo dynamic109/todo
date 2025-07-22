@@ -26,8 +26,12 @@ const NewTask = ({ isOpen, onClose }) => {
     if (!taskData.date) newErrors.date = "Date is required";
     if (!taskData.startTime) newErrors.startTime = "Start time is required";
     if (!taskData.endTime) newErrors.endTime = "End time is required";
+    if (taskData.endTime < taskData.startTime)
+      newErrors.endTime = "End time is less than start time";
     if (!taskData.category && !newCategory.trim())
       newErrors.category = "Category is required";
+    if (taskData.category === "new" && !newCategory.trim())
+      newErrors.category = "Category name is required";
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -53,9 +57,8 @@ const NewTask = ({ isOpen, onClose }) => {
     if (validate()) {
       const finalCategory =
         taskData.category === "new" ? newCategory : taskData.category;
-      const taskToSave = { ...taskData, category: finalCategory };
 
-      addTask(taskToSave);
+      addTask({ ...taskData, category: finalCategory });
 
       setTaskData({
         title: "",
@@ -241,6 +244,11 @@ const NewTask = ({ isOpen, onClose }) => {
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4265D6]"
                     placeholder="Enter category name"
                   />
+                  {errors.category && (
+                    <p className="mt-1 text-xs text-red-500">
+                      {errors.category}
+                    </p>
+                  )}
                 </div>
               )}
 

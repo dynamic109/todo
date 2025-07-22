@@ -13,11 +13,9 @@ const TasksSlides = ({ tasksData }) => {
       category.tasks.filter((task) => task.date === currentDate)
     ) || [];
 
-  const hasTasks = todaysTasks.length > 0;
-
   return (
     <div className="w-full">
-      {hasTasks ? (
+      {todaysTasks.length > 0 ? (
         <Swiper
           modules={[Autoplay]}
           spaceBetween={50}
